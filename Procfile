@@ -1,1 +1,1 @@
-web: gunicorn IrQuran.wsgi --log-file -
+web: python manage.py 0.0.0.0:8000
