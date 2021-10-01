@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" class="has-background-light">
+  {% load static %}
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- CSS only -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
+    />
+    <title>IR Al-Quran</title>
+  </head>
+  <body class="">
+    <div id="vue-app">
+      <div class="container is-fullhd">
+        <div class="notification is-primary">
+          <div class="container {%if query %}mt-2{%else %}mt-2 mb-6{%endif%}">
+            <p class="is-size-3 is-size-5-mobile has-text-is-light has-text-centered mb-4">
+              SISTEM PENCARIAN AYAT ALQURAN
+            </p>
+            <form action="{% url 'analyze' %}" method="post">
+              <div class="field has-addons">
+                <div class="control is-expanded">
+                  <input
+                    class="input is-normal is-rounded"
+                    type="text"
+                    placeholder="Masukkan konteks yang anda cari"
+                    name="query-alquran"
+                  />
+                </div>
+                {% csrf_token %}
+                <div class="control">
+                  <button
+                    class="button is-normal is-rounded is-info"
+                    @click="search = 'Loading'"
+                  >
+                    [[ search ]]
+                  </button>
+                </div>
+              </div>
+            </form>
+            {% if query %}
+            <p class="is-size-4 is-size-5-mobile has-text-is-light has-text-centered my-2">
+              Konteks: {{query}}
+            </p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      {% for data in datas %}
+      <div class="container my-5 box">
+        <div class="">
+          <p class="is-size-4 has-text-link">{{data.1}} : {{data.2}}</p>
+          <p class="is-size-6 has-text-danger">{{data.0}}</p>
+          <p class="is-size-4 is-family-code has-text-right">{{data.4}}</p>
+          <p class="is-size-6 has-text-danger">Artinya:</p>
+          {{data.3}}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script type="text/javascript">
+      let app = new Vue({
+        el: "#vue-app",
+        delimiters: ["[[", "]]"],
+        data: {
+          search: "Search",
+        },
+      });
+    </script>
+  </body>
+</html>
